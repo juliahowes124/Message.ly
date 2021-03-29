@@ -104,6 +104,8 @@ class User {
     WHERE m.from_username = $1
     `, [username])
 
+    if(resp.rows.length === 0) throw new NotFoundError();
+    
     return resp.rows.map((row) => {
       const {id, body, sent_at, read_at, username, first_name, last_name, phone} = row
       return {id, body, sent_at, read_at, to_user: 
@@ -128,6 +130,8 @@ class User {
     ON u.username = m.from_username
     WHERE m.to_username = $1
     `, [username])
+
+    if(resp.rows.length === 0) throw new NotFoundError();
 
     return resp.rows.map((row) => {
       const {id, body, sent_at, read_at, username, first_name, last_name, phone} = row

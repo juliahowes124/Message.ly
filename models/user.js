@@ -1,9 +1,8 @@
 "use strict";
 
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
-const { BCRYPT_WORK_FACTOR, SECRET_KEY } = require('../config');
+const { BCRYPT_WORK_FACTOR } = require('../config');
 
 const { NotFoundError } = require("../expressError");
 const db = require("../db");
@@ -17,6 +16,7 @@ class User {
    */
 
   static async register({ username, password, first_name, last_name, phone }) {
+    console.log("WE MADE IT TO register.")
     const hashedPwd = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
     const resp = await db.query(`
@@ -39,9 +39,9 @@ class User {
     if(resp.rows.length === 0) throw new NotFoundError();
 
     const hashed_pwd = resp.rows[0].password;
-    const isValidCredentials = bcrypt.compare(password, hashed_pwd);
+    const isValidCredentials = await bcrypt.compare(password, hashed_pwd);
     if(isValidCredentials) {
-      this.updateLoginTimestamp()
+      await this.updateLoginTimestamp(username)
     }
     return isValidCredentials
   }

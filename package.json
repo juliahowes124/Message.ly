@@ -15,9 +15,13 @@
     "dotenv": "^8.2.0",
     "express": "^5.0.0-alpha.8",
     "express-cors": "^0.0.3",
+    "global": "^4.4.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.2.1",
     "supertest": "^5.0.0-0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
 }

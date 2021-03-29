@@ -10,11 +10,11 @@ const { UnauthorizedError } = require("../expressError")
 
 router.post("/login", async function (req, res, next) {
   let {username, password} = req.body;
-  let token = jwt.sign({ username }, SECRET_KEY);
   if (await User.authenticate(username, password)) {
+    let token = jwt.sign({ username }, SECRET_KEY);
     return res.json({ token });
   } 
-  return next(new UnauthorizedError());
+  throw new UnauthorizedError("Invalid password/username combination");
 });
 
 router.post("/register", async function (req, res, next) {
